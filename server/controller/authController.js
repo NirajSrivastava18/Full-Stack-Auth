@@ -2,9 +2,15 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
+const { validationResult } = require('express-validator');
 
 //Register Route
 const register = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   // Destructure the request body
   const { username, email, password } = req.body;
 
@@ -35,6 +41,11 @@ const register = async (req, res) => {
 
 //Login Route
 const login = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   // Destructure the request body
   const { email, password } = req.body;
 

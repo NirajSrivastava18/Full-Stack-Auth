@@ -4,6 +4,7 @@ dotenv.config();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
 const connectDB = require('./config/db');
 const userRoute = require('./routes/userRoute');
 
@@ -12,6 +13,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(cookieParser());
+app.use(helmet());
 app.use('/api/', userRoute);
 
 app.get('/', (req, res) => {
