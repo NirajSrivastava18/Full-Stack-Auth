@@ -1,18 +1,27 @@
 const express = require('express');
-const User = require('../models/');
+const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 
 const isLoggedIn = async (req, res, next) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
+  const authorizationHeader = req.headers.authorization;
+  const token = authorizationHeader && authorizationHeader.split(' ')[1];
 
   try {
-    const decodedToken = jwt.verify(token, process.env.JWT);
-    const user = await User.findById(decodedToken?._id);
+    if (!token) {
+      throw new Error('Access token is missing');
+    }
+
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decodedToken.id);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
 
     req.user = user;
     next();
   } catch (error) {
-    throw new ApiError(401, error?.message || 'Invalid access token');
+    throw new ApiError(401, error.message);
   }
 };
 

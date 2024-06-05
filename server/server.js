@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const connectDB = require('./config/db');
 const userRoute = require('./routes/userRoute');
+const privateRoute = require('./routes/privateRoute');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(helmet());
 app.use('/api/', userRoute);
+app.use('/api/', privateRoute);
 
 app.get('/', (req, res) => {
   let time = new Date().toLocaleTimeString();
