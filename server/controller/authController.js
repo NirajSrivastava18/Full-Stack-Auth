@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const User = require('../models/userModel');
 
 //Register Route
 const register = async (req, res) => {
@@ -49,21 +49,24 @@ const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     // If the passwords do not match, return an error response
-    if (!isMatch)
+    if (!isMatch) {
       return res.status(400).json({ message: 'Password not matched' });
+    } else {
+      // Generate a JSON Web Token with the user data
+      const token = jwt.sign({ id: user._id }, process.env.JWT_secret, {
+        expiresIn: 3600,
+      });
 
-    // Generate a JSON Web Token with the user data
-    const token = jwt.sign(user.toJSON(), process.env.JWT, { expireIn: 3600 });
-
-    // Set the token as a cookie in the response and return the user data
-    res.cookie('token', token, { httpOnly: true }).json({
-      token,
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-      },
-    });
+      res.status(200).json({
+        message: 'User logged In successfully',
+        token,
+        user: {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+        },
+      });
+    }
   } catch (err) {
     // If an error occurs, return an error response
     res.status(500).json({ message: err.message });
