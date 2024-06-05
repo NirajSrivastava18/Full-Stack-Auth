@@ -35,17 +35,27 @@ const register = async (req, res) => {
 
 //Login Route
 const login = async (req, res) => {
+  // Destructure the request body
   const { email, password } = req.body;
+
   try {
+    // Find the user in the database
     const user = await User.findOne({ email });
+
+    // If the user does not exist, return an error response
     if (!user) return res.status(400).json({ message: 'User does not exist' });
 
+    // Compare the provided password with the hashed password stored in the database
     const isMatch = await bcrypt.compare(password, user.password);
+
+    // If the passwords do not match, return an error response
     if (!isMatch)
       return res.status(400).json({ message: 'Password not matched' });
 
+    // Generate a JSON Web Token with the user data
     const token = jwt.sign(user.toJSON(), process.env.JWT, { expireIn: 3600 });
 
+    // Set the token as a cookie in the response and return the user data
     res.cookie('token', token, { httpOnly: true }).json({
       token,
       user: {
@@ -55,6 +65,7 @@ const login = async (req, res) => {
       },
     });
   } catch (err) {
+    // If an error occurs, return an error response
     res.status(500).json({ message: err.message });
   }
 };
