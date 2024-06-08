@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import Background from './Background';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -8,6 +8,7 @@ import Cookies from 'js-cookie';
 import './Register.css';
 
 const Register = () => {
+  const navigate = useNavigate();
   const initialValues = {
     username: '',
     email: '',
@@ -36,6 +37,7 @@ const Register = () => {
         Cookies.set('token', token, { expires: 1 });
         Cookies.set('username', res.data?.user?.username, { expires: 1 });
         setSubmitting(false);
+        navigate('/');
       })
       .catch((err) => {
         alert('Invalid Credentials');
