@@ -3,6 +3,8 @@ import Background from './Background';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+import './PrivatePage.css';
 
 import axios from 'axios';
 import './Login.css';
@@ -12,6 +14,8 @@ const Login = () => {
     email: '',
     password: '',
   };
+
+  const navigate = useNavigate();
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -24,8 +28,7 @@ const Login = () => {
     axios
       .post('http://localhost:5000/api/login', values)
       .then((res) => {
-        alert(res.data.message);
-
+        navigate('/private');
         const { token } = res.data;
         Cookies.set('token', token, { expires: 1 });
         Cookies.set('username', res.data.user.username, { expires: 1 });
@@ -40,8 +43,9 @@ const Login = () => {
   return (
     <>
       <Background />
+
       <div className="login-Container">
-        <h2>Login</h2>
+        <h2 className="title">Login</h2>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -72,7 +76,11 @@ const Login = () => {
               <ErrorMessage name="password">
                 {(msg) => <div className="error-message">{msg}</div>}
               </ErrorMessage>
-              <button type="submit" disabled={isSubmitting}>
+              <button
+                type="submit"
+                className="submit-btn"
+                disabled={isSubmitting}
+              >
                 Log In
               </button>
               <div className="register">

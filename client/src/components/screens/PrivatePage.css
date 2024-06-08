@@ -1,0 +1,36 @@
+.private-page {
+  position: absolute;
+  left: 50%;
+  top: 51%;
+  z-index: 2;
+  width: 45%;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: rgba(81, 80, 80, 0.195);
+  border: 3px solid rgba(255, 255, 255, 0.888);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(10px);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 20px;
+}
+
+.error-private-message {
+  position: absolute;
+  left: 50%;
+  top: 51%;
+  z-index: 2;
+
+  border-radius: 8px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: rgba(81, 80, 80, 0.195);
+  border: 3px solid rgba(255, 255, 255, 0.888);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(10px);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 20px;
+  color: red;
+  font-family: 'lobster', sans-serif;
+  font-size: 1.2rem;
+}
